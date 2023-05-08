@@ -1,3 +1,3 @@
 # DllProxy
 
-DLL Proxy 
+My DLL proxy project
