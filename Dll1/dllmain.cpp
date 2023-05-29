@@ -5,6 +5,7 @@
 #include "pch.h"
 #include <stdio.h>
 #include <thread>
+#include "direct.h" 
 
 #pragma comment(linker, "/export:PdhAddCounterA=C:\\Windows\\System32\\pdh.PdhAddCounterA")
 #pragma comment(linker, "/export:PdhAddCounterW=C:\\Windows\\System32\\pdh.PdhAddCounterW")
